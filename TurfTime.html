@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TurfTime - Manage Your Turf Bookings</title>
+    <link rel="stylesheet" href="TurfTime.css">
+    <link rel="stylesheet" href="SideBar.css">
+</head>
+<body>
+    <button class="menu-toggle" onclick="toggleSidebar()">
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+    </button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-icon">🏟️</div>
+                <span>TurfTime</span>
+            </div>
+        </div>
+
+        <!-- User Profile Section -->
+        <div class="user-profile" id="sidebarUserProfile">
+            <div class="user-avatar" id="sidebarUserAvatar">👤</div>
+            <div class="user-name" id="sidebarUserName">Guest User</div>
+            <div class="user-email" id="sidebarUserEmail">Please login</div>
+        </div>
+
+        <div class="digital-line"></div>
+
+        <!-- Navigation Menu -->
+        <nav class="sidebar-nav">
+            <!-- Dashboard -->
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="handleNavClick('dashboard')">
+                    <div class="nav-icon">📊</div>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </div>
+
+            <!-- Bookings with Submenu -->
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="toggleSubmenu(this)">
+                    <div class="nav-icon">📅</div>
+                    <span class="nav-text">Bookings</span>
+                    <div class="nav-arrow">▼</div>
+                </a>
+                <div class="submenu">
+                    <a href="#" class="submenu-link" onclick="handleNavClick('new-booking')">New Booking</a>
+                    <a href="#" class="submenu-link" onclick="handleNavClick('my-bookings')">My Bookings</a>
+                    <a href="#" class="submenu-link" onclick="handleNavClick('booking-history')">Booking History</a>
+                </div>
+            </div>
+
+            <!-- Turfs with Submenu -->
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="toggleSubmenu(this)">
+                    <div class="nav-icon">🏟️</div>
+                    <span class="nav-text">Turfs</span>
+                    <div class="nav-arrow">▼</div>
+                </a>
+                <div class="submenu">
+                    <a href="#" class="submenu-link" onclick="handleNavClick('view-turfs')">View All Turfs</a>
+                    <a href="#" class="submenu-link" onclick="handleNavClick('turf-availability')">Availability</a>
+                    <a href="#" class="submenu-link" onclick="handleNavClick('turf-pricing')">Pricing</a>
+                </div>
+            </div>
+
+            <!-- Profile with Submenu -->
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="toggleSubmenu(this)">
+                    <div class="nav-icon">👤</div>
+                    <span class="nav-text">Profile</span>
+                    <div class="nav-arrow">▼</div>
+                </a>
+                <div class="submenu">
+                    <a href="#" class="submenu-link" onclick="handleNavClick('view-profile')">View Profile</a>
+                    <a href="#" class="submenu-link" onclick="handleNavClick('edit-profile')">Edit Profile</a>
+                    <a href="#" class="submenu-link" onclick="handleNavClick('change-password')">Change Password</a>
+                </div>
+            </div>
+
+            <!-- Reports -->
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="handleNavClick('reports')">
+                    <div class="nav-icon">📈</div>
+                    <span class="nav-text">Reports</span>
+                </a>
+            </div>
+
+            <!-- Settings -->
+            <div class="nav-item">
+                <a href="#" class="nav-link" onclick="handleNavClick('settings')">
+                    <div class="nav-icon">⚙️</div>
+                    <span class="nav-text">Settings</span>
+                </a>
+            </div>
+
+            <div class="digital-line"></div>
+
+            <!-- Logout -->
+            <div class="nav-item" id="sidebarLogout" style="display: none;">
+                <a href="#" class="nav-link" onclick="handleLogout()" style="color: #ff6b6b;">
+                    <div class="nav-icon">🚪</div>
+                    <span class="nav-text">Logout</span>
+                </a>
+            </div>
+
+            <!-- Login/Register for guests -->
+            <div class="nav-item" id="sidebarAuth">
+                <a href="#" class="nav-link" onclick="handleNavClick('login')" style="color: #4facfe;">
+                    <div class="nav-icon">🔐</div>
+                    <span class="nav-text">Login / Register</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <div class="logo" onclick="turfTime.showHome()">
+                <div class="logo-icon">🏟️</div>
+                TurfTime
+            </div>
+            <nav class="nav">
+                <a href="#" onclick="turfTime.showHome()">Home</a>
+                <a href="Customer_Dashboard.html">Dashboard</a>
+                <a href="#" onclick="turfTime.showContact()">Contact</a>
+                <a href="Review.html" onclick="turfTime.showReviews()" class="review-link">Reviews</a>
+            </nav>
+            <!-- <div class="auth-buttons" id="authButtons">
+                <button class="btn btn-login" onclick="turfTime.showLoginModal()">Login</button>
+                <button class="btn btn-register" onclick="turfTime.showRegisterModal()">Register</button>
+            </div> -->
+            <div class="user-info" id="userInfo">
+                <div class="user-avatar">👤</div>
+                <span class="user-name" id="userName">Guest User</span>
+                <button class="btn btn-logout" onclick="turfTime.logout()">Logout</button>
+            </div>
+        </header>
+
+        <main class="main-content" id="homeContent">
+            <div class="content-wrapper">
+                <section class="text-section">
+                    <h1 class="welcome-title">Welcome to TurfTime</h1>
+                    <p class="welcome-description">
+                        Manage your turf bookings with ease. Book now, view availability, and more!
+                    </p>
+                    <button class="btn-book-now" onclick="turfTime.handleBookNow()">Book Now</button>
+                </section>
+                
+                <section class="image-section">
+                    <img src="Image2.jpg" 
+                         alt="Professional turf field with goal posts" 
+                         class="turf-image">
+                    <div class="image-overlay"></div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Dashboard -->
+        <div class="dashboard" id="dashboardContent">
+            <h2>My Bookings</h2>
+            <div id="bookingsList">
+                <p style="color: #6b7280; text-align: center; margin: 40px 0;">No bookings found. Book your first slot!</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="TurfTime.js"></script>
+    <script src="SideBar.js"></script>
+
+</body>
+</html>
