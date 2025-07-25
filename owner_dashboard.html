@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Dashboard - TurfTime</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .welcome-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .welcome-title {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .action-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .action-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .action-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .action-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+        }
+
+        .action-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .action-description {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .action-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .action-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .content-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .booking-item {
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .booking-item:hover {
+            background: linear-gradient(135deg, #e8f2ff 0%, #dae8ff 100%);
+            transform: translateX(8px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .booking-info {
+            flex: 1;
+        }
+
+        .booking-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .booking-details {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+
+        .booking-customer {
+            color: #667eea;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .booking-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .booking-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-accept {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-decline {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+            color: white;
+        }
+
+        .btn-accept:hover, .btn-decline:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .booking-status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-confirmed {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+        }
+
+        .status-pending {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            color: #856404;
+        }
+
+        .status-cancelled {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+        }
+
+        .turf-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .turf-card {
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .turf-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .turf-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .turf-details {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .turf-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .turf-stat {
+            text-align: center;
+        }
+
+        .turf-stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .turf-stat-label {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .empty-text {
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .add-turf-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-turf-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        /* Booking Request Cards */
+        .booking-request-card, .pending-request-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+        }
+
+        .booking-header, .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .booking-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-confirmed { background: #d4edda; color: #155724; }
+        .status-rejected { background: #f8d7da; color: #721c24; }
+
+        .request-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .approve-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .reject-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .cancel-btn {
+            background: #ffc107;
+            color: #212529;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .approve-btn:hover { background: #218838; }
+        .reject-btn:hover { background: #c82333; }
+        .cancel-btn:hover { background: #e0a800; }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .booking-item {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .booking-actions {
+                justify-content: center;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span>🏟️</span>
+                TurfTime Owner
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">👨‍💼</div>
+                <div>
+                    <div id="ownerName">Owner Name</div>
+                    <div style="font-size: 0.8rem; opacity: 0.8;">Owner Dashboard</div>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="welcome-section">
+            <div class="welcome-title">Welcome Back, Owner!</div>
+            <div class="welcome-subtitle">Manage your turf facilities and track your business performance</div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🏟️</div>
+                <div class="stat-number" id="totalTurfs">0</div>
+                <div class="stat-label">Total Turfs</div>
+            </div>
+            <!-- <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-number" id="todayBookings">0</div>
+                <div class="stat-label">Today's Bookings</div>
+            </div> -->
+            <!-- <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-number" id="monthlyRevenue">Tk0</div>
+                <div class="stat-label">Monthly Revenue</div>
+            </div> -->
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-number" id="averageRating">0.0</div>
+                <div class="stat-label">Average Rating</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-number" id="totalCustomers">0</div>
+                <div class="stat-label">Total Customers</div>
+            </div>
+        </div>
+
+        <div class="action-cards">
+            <div class="action-card" onclick="addNewTurf()">
+                <div class="action-icon">➕</div>
+                <div class="action-title">Add New Turf</div>
+                <div class="action-description">Register a new turf facility to your portfolio</div>
+                <button class="action-button">Add Turf</button>
+            </div>
+            <div class="action-card" onclick="manageBookings()">
+                <div class="action-icon">📋</div>
+                <div class="action-title">Manage Bookings</div>
+                <div class="action-description">Accept, decline, or modify customer bookings</div>
+                <button class="action-button"> <a href="Owner_Panel.html" style="text-decoration: none; color: white;"> View Bookings </a> </button>
+            </div>
+            <!-- <div class="action-card" onclick="viewAnalytics()">
+                <div class="action-icon">📊</div>
+                <div class="action-title">Analytics</div>
+                <div class="action-description">Track performance and revenue insights</div>
+                <button class="action-button">View Analytics</button>
+            </div>
+            <div class="action-card" onclick="manageProfile()">
+                <div class="action-icon">⚙️</div>
+                <div class="action-title">Settings</div>
+                <div class="action-description">Update your profile and turf information</div>
+                <button class="action-button">Manage Settings</button>
+            </div> -->
+        </div>
+
+        <!-- <div class="content-section">
+            <div class="section-title">
+                <span>📋</span>
+                Pending Bookings
+            </div>
+            <div id="pendingBookings">
+
+            </div>
+        </div> -->
+
+        <!-- Add this section to show pending booking requests -->
+        <!-- <div class="dashboard-section">
+            <h3>🔔 Pending Booking Requests</h3>
+            <div id="pendingRequests">
+            </div>
+        </div> -->
+
+        <!-- Add this section for booking management -->
+        <!-- <div class="dashboard-section">
+            <h3>📊 Booking Management</h3>
+            <div id="bookingManagement">
+            </div>
+        </div> -->
+
+        <!-- <div class="content-section">
+            <div class="section-title">
+                <span>🏟️</span>
+                My Turfs
+            </div>
+            <div id="myTurfs">
+
+            </div>
+        </div> -->
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Sample data for demonstration
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const ownerData = {
+            name: currentUser ? currentUser.name : "Owner Name",
+            totalTurfs: 1,
+            todayBookings: 8,
+            monthlyRevenue: 10000,
+            averageRating: 4.2,
+            totalCustomers: 156,
+            pendingBookings: [
+                {
+                    id: 1,
+                    customerName: "Naimul Asif",
+                    turfName: "DreamCity",
+                    date: "2025-06-07",
+                    time: "18:00 - 20:00",
+                    status: "pending"
+                },
+                {
+                    id: 2,
+                    customerName: "Nahid Hasan",
+                    turfName: "DreamCity",
+                    date: "2025-06-08",
+                    time: "16:00 - 17:30",
+                    status: "pending"
+                }
+            ],
+            // turfs: [
+            //     {
+            //         id: 1,
+            //         name: "Main Ground",
+            //         type: "Football",
+            //         location: "Sector 15, Gurgaon",
+            //         todayBookings: 5,
+            //         monthlyRevenue: 25000,
+            //         rating: 4.5
+            //     },
+            //     {
+            //         id: 2,
+            //         name: "Practice Field",
+            //         type: "Cricket",
+            //         location: "Sector 22, Gurgaon",
+            //         todayBookings: 3,
+            //         monthlyRevenue: 15000,
+            //         rating: 4.0
+            //     },
+            //     {
+            //         id: 3,
+            //         name: "Multi-Sport Arena",
+            //         type: "Multi-Sport",
+            //         location: "Sector 18, Gurgaon",
+            //         todayBookings: 0,
+            //         monthlyRevenue: 5000,
+            //         rating: 3.8
+            //     }
+            // ]
+        };
+
+        // Initialize dashboard
+        function initializeDashboard() {
+            const curerntUser = JSON.parse(localStorage.getItem('currentUser'));
+            document.getElementById('ownerName').textContent = currentUser ? currentUser.name : "Owner Name";
+            document.getElementById('totalTurfs').textContent = ownerData.totalTurfs;
+            document.getElementById('todayBookings').textContent = ownerData.todayBookings;
+            document.getElementById('monthlyRevenue').textContent = `TK${ownerData.monthlyRevenue.toLocaleString()}`;
+            document.getElementById('averageRating').textContent = ownerData.averageRating.toFixed(1);
+            document.getElementById('totalCustomers').textContent = ownerData.totalCustomers;
+
+            const welcomeTitle = document.querySelector('.welcome-title');
+            welcomeTitle.textContent = `Welcome Back, ${currentUser ? currentUser.name : 'Owner'}!`;
+            
+            loadPendingBookings();
+            loadMyTurfs();
+        }
+
+        // function loadPendingBookings() {
+        //     const container = document.getElementById('pendingBookings');
+            
+        //     if (ownerData.pendingBookings.length === 0) {
+        //         container.innerHTML = `
+        //             <div class="empty-state">
+        //                 <div class="empty-icon">✅</div>
+        //                 <div class="empty-title">No Pending Bookings</div>
+        //                 <div class="empty-text">All bookings are up to date!</div>
+        //             </div>
+        //         `;
+        //         return;
+        //     }
+            
+        //     container.innerHTML = '';
+            
+        //     ownerData.pendingBookings.forEach(booking => {
+        //         const bookingElement = document.createElement('div');
+        //         bookingElement.className = 'booking-item';
+        //         bookingElement.innerHTML = `
+        //             <div class="booking-info">
+        //                 <div class="booking-title">${booking.turfName}</div>
+        //                 <div class="booking-details">${booking.date} • ${booking.time}</div>
+        //                 <div class="booking-customer">Customer: ${booking.customerName}</div>
+        //             </div>
+        //             <div class="booking-actions">
+        //                 <button class="booking-btn btn-accept" onclick="acceptBooking(${booking.id})">Accept</button>
+        //                 <button class="booking-btn btn-decline" onclick="declineBooking(${booking.id})">Decline</button>
+        //             </div>
+        //         `;
+        //         container.appendChild(bookingElement);
+        //     });
+        // }
+
+
+        // Add these functions to your Owner Dashboard JS
+        function loadPendingRequests() {
+            const requests = JSON.parse(localStorage.getItem('bookingRequests') || '[]');
+            const pendingRequests = requests.filter(req => req.status === 'pending');
+            
+            const container = document.getElementById('pendingRequests');
+            container.innerHTML = '';
+            
+            pendingRequests.forEach(request => {
+                const requestElement = createPendingRequestElement(request);
+                container.appendChild(requestElement);
+            });
+        }
+
+        function createPendingRequestElement(request) {
+            const div = document.createElement('div');
+            div.className = 'pending-request-card';
+            div.innerHTML = `
+                <div class="request-header">
+                    <span class="request-id">${request.id}</span>
+                    <span class="request-date">${new Date(request.timestamp).toLocaleDateString()}</span>
+                </div>
+                <div class="request-details">
+                    <p><strong>Customer:</strong> ${request.customerInfo.name}</p>
+                    <p><strong>Email:</strong> ${request.customerInfo.email}</p>
+                    <p><strong>Phone:</strong> ${request.customerInfo.phone}</p>
+                    <p><strong>Date:</strong> ${request.date}</p>
+                    <p><strong>Turf:</strong> ${request.turf}</p>
+                    <p><strong>Slots:</strong> ${request.slots.length}</p>
+                    <p><strong>Players:</strong> ${request.customerInfo.playerCount}</p>
+                    <p><strong>Total Amount:</strong> ৳${request.totalAmount}</p>
+                    ${request.specialRequests ? `<p><strong>Special Requests:</strong> ${request.specialRequests}</p>` : ''}
+                </div>
+                <div class="request-actions">
+                    <button class="approve-btn" onclick="approveBooking('${request.id}')">Approve</button>
+                    <button class="reject-btn" onclick="rejectBooking('${request.id}')">Reject</button>
+                </div>
+            `;
+            return div;
+        }
+
+        function approveBooking(bookingId) {
+            updateBookingStatus(bookingId, 'confirmed');
+            showNotification('Booking approved successfully!', 'success');
+        }
+
+        function rejectBooking(bookingId) {
+            const reason = prompt('Please provide a reason for rejection:');
+            if (reason) {
+                updateBookingStatus(bookingId, 'rejected', reason);
+                showNotification('Booking rejected successfully!', 'success');
+            }
+        }
+
+        function updateBookingStatus(bookingId, status, reason = '') {
+            const requests = JSON.parse(localStorage.getItem('bookingRequests') || '[]');
+            const requestIndex = requests.findIndex(req => req.id === bookingId);
+            
+            if (requestIndex !== -1) {
+                requests[requestIndex].status = status;
+                requests[requestIndex].statusUpdateTime = new Date().toISOString();
+                if (reason) {
+                    requests[requestIndex].rejectionReason = reason;
+                }
+                localStorage.setItem('bookingRequests', JSON.stringify(requests));
+                loadPendingRequests();
+            }
+        }
+
+        function loadMyTurfs() {
+            const container = document.getElementById('myTurfs');
+            
+            if (ownerData.turfs.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🏟️</div>
+                        <div class="empty-title">No Turfs Added</div>
+                        <div class="empty-text">Start by adding your first turf facility!</div>
+                        <button class="add-turf-btn" onclick="addNewTurf()">
+                            <span>➕</span>
+                            Add Your First Turf
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '<div class="turf-grid"></div>';
+            const grid = container.querySelector('.turf-grid');
+            
+            ownerData.turfs.forEach(turf => {
+                const turfElement = document.createElement('div');
+                turfElement.className = 'turf-card';
+                turfElement.innerHTML = `
+                    <div class="turf-name">${turf.name}</div>
+                    <div class="turf-details">${turf.type} • ${turf.location}</div>
+                    <div class="turf-stats">
+                        <div class="turf-stat">
+                            <div class="turf-stat-number">${turf.todayBookings}</div>
+                            <div class="turf-stat-label">Today</div>
+                        </div>
+                        <div class="turf-stat">
+                            <div class="turf-stat-number">Tk${turf.monthlyRevenue.toLocaleString()}</div>
+                            <div class="turf-stat-label">Monthly</div>
+                        </div>
+                        <div class="turf-stat">
+                            <div class="turf-stat-number">${turf.rating}</div>
+                            <div class="turf-stat-label">Rating</div>
+                        </div>
+                    </div>
+                    <div class="booking-actions">
+                        <button class="booking-btn btn-accept" onclick="editTurf(${turf.id})">Edit</button>
+                        <button class="booking-btn btn-decline" onclick="viewTurfDetails(${turf.id})">View Details</button>
+                    </div>
+                `;
+                grid.appendChild(turfElement);
+            });
+        }
+
+        // Booking management functions
+        function acceptBooking(bookingId) {
+            const booking = ownerData.pendingBookings.find(b => b.id === bookingId);
+            if (booking) {
+                booking.status = 'confirmed';
+                ownerData.pendingBookings = ownerData.pendingBookings.filter(b => b.id !== bookingId);
+                loadPendingBookings();
+                showNotification(`Booking accepted for ${booking.customerName}`, 'success');
+            }
+        }
+
+        function declineBooking(bookingId) {
+            const booking = ownerData.pendingBookings.find(b => b.id === bookingId);
+            if (booking) {
+                booking.status = 'cancelled';
+                ownerData.pendingBookings = ownerData.pendingBookings.filter(b => b.id !== bookingId);
+                loadPendingBookings();
+                showNotification(`Booking declined for ${booking.customerName}`, 'error');
+            }
+        }
+
+        // Navigation functions
+        function addNewTurf() {
+            showNotification('Redirecting to add turf page...', 'info');
+        }
+
+        function manageBookings() {
+            showNotification('Redirecting to bookings management...', 'info');
+        }
+
+        function viewAnalytics() {
+            showNotification('Redirecting to analytics dashboard...', 'info');
+        }
+
+        function manageProfile() {
+            showNotification('Redirecting to profile settings...', 'info');
+        }
+
+        function editTurf(turfId) {
+            showNotification(`Editing turf ID: ${turfId}`, 'info');
+        }
+
+        function viewTurfDetails(turfId) {
+            showNotification(`Viewing details for turf ID: ${turfId}`, 'info');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                showNotification('Logging out...', 'info');
+                // Redirect to auth page
+                setTimeout(() => {
+                    window.location.href = 'Auth.html';
+                }, 1000);
+            }
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <span>${message}</span>
+                <button onclick="this.parentElement.remove()">×</button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // Check for new notifications (for owner dashboard)
+        function checkForNewBookings() {
+            const requests = JSON.parse(localStorage.getItem('bookingRequests') || '[]');
+            const newRequests = requests.filter(req => 
+                req.status === 'pending' && 
+                !req.notificationSent
+            );
+            
+            if (newRequests.length > 0) {
+                showNotification(`You have ${newRequests.length} new booking request(s)!`, 'info');
+                
+                // Mark notifications as sent
+                newRequests.forEach(req => req.notificationSent = true);
+                localStorage.setItem('bookingRequests', JSON.stringify(requests));
+            }
+        }
+
+        // Auto-refresh for owner dashboard
+        setInterval(checkForNewBookings, 30000); // Check every 30 seconds
+
+        // Initialize dashboard on page load
+        window.addEventListener('DOMContentLoaded', initializeDashboard);
+    </script>
+</body>
+</html>
